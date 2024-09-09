@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DEV@Deakin - Subscribe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="signup-container">
+        <h1>Join the DEV@Deakin Community</h1>
+        <p>Subscribe to receive the latest updates and news.</p>
+
+        <form id="signup-form">
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            <button type="submit">Subscribe</button>
+        </form>
+
+        <div id="responseMessage"></div>
+    </div>
+
+    <!-- Include external JavaScript file -->
+    <script>
+        const form = document.getElementById('signup-form');
+        const responseMessage = document.getElementById('responseMessage');
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById('email').value;
+
+            // Send email to the backend using Fetch API
+            fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    responseMessage.textContent = 'Thank you for subscribing! A welcome email has been sent.';
+                    responseMessage.style.color = 'green';
+                } else {
+                    responseMessage.textContent = 'There was an error subscribing. Please try again.';
+                    responseMessage.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                responseMessage.textContent = 'An error occurred. Please try again later.';
+                responseMessage.style.color = 'red';
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
